@@ -1,9 +1,8 @@
 /*
-SFT211- Project 
-Section- NEE
-Group- 3
+SFT211- Group Project
+Section NEE
+Group 3
 */
-
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include "mapping.h"
