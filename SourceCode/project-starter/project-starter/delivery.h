@@ -1,3 +1,8 @@
+/*
+SFT211- Group Project
+Section NEE
+Group 3
+*/
 #pragma once
 #ifndef DELIVERY_H
 #define DELIVERY_H
@@ -32,16 +37,80 @@ struct Shipment {
 struct Truck {
 	char routeColor[10];
 	double weightRemaining;
-	double volumeReamining;
+	double volumeRemaining;
 	int limitingFactor;
+	Route truckRoute;
 };
 
 /*
 * A collection of points that constitute the diverted path from the route of the 
 * truck to the destination
 */
-struct DiverterdRoute {
+struct DivertedRoute {
 	struct Point divRoute[MAX_ROUTE];
 };
+
+
+/*
+* Displays the header of the delivery menu 
+* recieves no parameters 
+* returns nothing
+*/
+void displayHedeer();
+
+/**
+* Displays the complete delivery menu and calls required function to get, validate and implement user input
+* recieves no parameters
+* returns nothing
+*/
+void displayDeliveryMenu();
+
+
+/**
+* Checks if the weight input is valid or not
+* @param recieves a weight value
+* @returns 1 if the value is valid and 0 if it is not
+*/
+int checkWeight(double weight);
+
+/**
+* Checks if the box volume input is valid or not
+* @param recieves a volume value
+* @returns 1 if the value is valid and 0 if it is not
+*/
+int checkBox(double boxSize);
+
+/**
+* Checks if the destination input is valid or not
+* @param recieves a volume value
+* @returns 1 if the value is valid and 0 if it is not
+*/
+int checkDestination();
+
+/**
+* Finds the best truck for shipment after comparing, routes, shortest diverted paths, load already on the trucks 
+* and percentages of the limiting factors. If the shipment cannot be delivered it returns a negative value
+* @param *map recieves the address of the current map array holding the positions of all the buildings and empty spaces
+* @param truckArr[] an array of truck elements containg details about the truck
+* @param numOfTrucks total number of trucks in the array
+* @param shipment A structure containing details of the shipment
+* @returns index value of the selected truck in the array, -1 if no truck is able to take the shipment
+*/
+int selectTruck(struct Map *map, struct Truck truckArr[], int numOfTrucks, struct Shipment shipment);
+
+/**
+* Gets input about the shipment details validates the input and displays error prompts for incorrect input
+* stores the correct input in a shipment data structure and returns the data structure
+* @returns the shipment structure with details about the shipment
+*/
+struct Shipment getUserInput();
+
+/**
+* Gets the shortest possible path when a truck's route needs to be diverted for a shipment
+* gets all the points on the map that make up the route and stores them in the divertedRoute structure
+* recieves no parameters
+* @returns the diverted route structure
+*/
+struct DivertedRoute getDivertedRoute();
 
 #endif // DELIVERY_H
