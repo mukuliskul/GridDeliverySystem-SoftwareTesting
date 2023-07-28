@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <string.h>
 #include "Delivery.h"
 
 void displayHeader() {
@@ -26,7 +27,7 @@ void displayDeliveryMenu() {
     // Assuming there is an array of trucks defined as "struct Truck truckArr[NUM_TRUCKS];"
 
     struct Shipment shipment;
-    struct Truck truckArr[3] = { {"BLUE", 1000.0, 36.0, 0, blueRoute}, {"YELLOW", 1000.0, 36.0, 0, yellowRoute}, {"GREEN", 1000.0, 36.0, 0, greenRoute} };
+    struct Truck truckArr[3] = { {"BLUE", 1000.0, 36.0, 0, 0, blueRoute}, {"YELLOW", 1000.0, 36.0, 0, 0, yellowRoute}, {"GREEN", 1000.0, 36.0, 0, 0, greenRoute} };
     int TruckIndex;
     int flag = 0;
 
@@ -39,22 +40,30 @@ void displayDeliveryMenu() {
         }
         else {
             TruckIndex = selectTruck(&map, truckArr, 3, shipment);
-
             if (TruckIndex == -1) {
                 printf("No truck is able to take the shipment.\n");
             }
             else {
-                printf("Ship on %s, ", truckArr[TruckIndex].routeColor);
-                if (truckArr[TruckIndex].limitingFactor > 0) {
+                printf("Ship on %s LINE, ", truckArr[TruckIndex].routeColor);
+                if (truckArr[TruckIndex].divertRoute == 0) {
+                    printf("came inside");
                     struct DivertedRoute divertedRoute = getDivertedRoute(&map, truckArr[TruckIndex], shipment.destination);
-                    printf("divert ");
+                    printf("came outie");
+                    printf("divert: ");
                     int i = 0;
-                    while (!isPointEqual(divertedRoute.divRoute[i], map.INVALID)) {
+                    int totalDivPoints = sizeof(divertedRoute.divRoute) / sizeof(divertedRoute.divRoute[0]);
+                    for (i; i < totalDivPoints; i++) {
+                        printf("%d%c ", divertedRoute.divRoute[i].row, divertedRoute.divRoute[i].col);
+                        if (i < totalDivPoints - 1) {
+                            printf(', ');
+                        }
+                    }
+                    /*while (!isPointEqual(divertedRoute.divRoute[i], map.INVALID)) {
                         printf("%c%d", divertedRoute.divRoute[i].col + 'A', divertedRoute.divRoute[i].row);
                         if (!isPointEqual(divertedRoute.divRoute[i + 1], map.INVALID))
                             printf(", ");
                         i++;
-                    }
+                    }*/
                 }
                 else {
                     printf("no diversion");
@@ -98,58 +107,73 @@ int checkDestination(int row, char col) {
 }
 
 int selectTruck(struct Map* map, struct Truck truckArr[], int numOfTrucks, struct Shipment shipment) {
-    
+
     struct DivertedRoute dr;
-    char onRouteTrucks[3], proximityApprovedTrucks[3];
-  
+    int onRouteTrucks[3] = { 0 }, proximityApprovedTrucks[3] = { 0 };
+
+   /* for (int i = 0; i < 3; i++) {
+        printf("%d\n", onRouteTrucks[i]);
+    }*/
+
     // gets lenth of array : proximityApprovedTrucks
     int lengthProximityTrucks;
-  
+
     int truckIndex = -1, minDivDist = 100, onRouteCounter = 0, proximityApprovedCounter = 0;
 
-    for(int i = 0; i < numOfTrucks; i++){
-      //check for if the remaining weight/volume fits
-      if(shipment.weight <= truckArr[i].weightRemaining && shipment.volume <= truckArr[i].volumeRemaining){
-        // good to go
-        truckArr[i].limitingFactor = 1;
-      }else{
-        // problem with weight/volume
-        truckArr[i].limitingFactor = 0;
-      }
+    for (int i = 0; i < numOfTrucks; i++) {
+        //check for if the remaining weight/volume fits
+        if (shipment.weight <= truckArr[i].weightRemaining && shipment.volume <= truckArr[i].volumeRemaining) {
+            // good to go
+            truckArr[i].limitingFactor = 1;
+        }
+        else {
+            // problem with weight/volume
+            truckArr[i].limitingFactor = 0;
+        }
     }
 
-    for (int i = 0; i < numOfTrucks; i++) {
+    for (int i = 0; i < numOfTrucks && !truckArr[i].divertRoute; i++) {
         for (int j = 0; j < MAX_ROUTE; j++) {
-            if (distance(&truckArr[i].truckRoute.points[j], &shipment.destination) == 1) {
-              //no diverted path is needed
-              if(truckArr[i].limitingFactor){
-                onRouteTrucks[onRouteCounter] = i + 1;
-                onRouteCounter++;  
-              }
+            if (distance(&truckArr[i].truckRoute.points[j], &shipment.destination) == 66) {
+                //no diverted path is needed
+                if (truckArr[i].limitingFactor) {
+                    onRouteTrucks[onRouteCounter] = i + 1;
+                    onRouteCounter++;
+                    truckArr[i].divertRoute = 1;
+                }
             }
             else {
-              //diverted path is needed
-              if(truckArr[i].limitingFactor){
-                proximityApprovedTrucks[proximityApprovedCounter] = i + 1;
-                proximityApprovedCounter++;  
-              }
+                // divert route = 0 means it is needed
+                truckArr[i].divertRoute = 0;
+            }
+        }
+        //diverted path is needed
+        if (!truckArr[i].divertRoute && truckArr[i].limitingFactor) {
+            proximityApprovedTrucks[proximityApprovedCounter] = i + 1;
+            proximityApprovedCounter++;
+        }
+    }
+
+    if (onRouteTrucks[0] != 0) {
+        truckIndex = onRouteTrucks[0] - 1;
+    }
+    else if (proximityApprovedTrucks[0] != 0) {
+        lengthProximityTrucks = getArrLength(proximityApprovedTrucks);
+        for (int i = 0; i < lengthProximityTrucks; i++) {
+            dr = getDivertedRoute(map, truckArr[proximityApprovedTrucks[i] - 1], shipment.destination);
+            if (dr.divNumPoints < minDivDist) {
+                minDivDist = dr.divNumPoints;
+                truckIndex = proximityApprovedTrucks[i] - 1;
+                truckArr[proximityApprovedTrucks[i] - 1].divertRoute = 0;
             }
         }
     }
 
-    if(onRouteTrucks[0] != 0){
-      truckIndex = onRouteTrucks[0] - 1;
-    }else if(proximityApprovedTrucks[0] != 0){
-      lengthProximityTrucks = sizeof(proximityApprovedTrucks) / sizeof(proximityApprovedTrucks[0]);
-      for(int i; i < lengthProximityTrucks; i++){
-        dr = getDivertedRoute(map, truckArr[proximityApprovedTrucks[i] - 1], shipment.destination);
-        if(dr.divNumPoints < minDivDist){
-          minDivDist = dr.divNumPoints;
-          truckIndex = proximityApprovedTrucks[i] - 1;
-        }
-      }
+    if (truckIndex != -1) {
+        truckArr[truckIndex].weightRemaining = truckArr[truckIndex].weightRemaining - shipment.weight;
+        truckArr[truckIndex].volumeRemaining = truckArr[truckIndex].volumeRemaining - shipment.volume;
     }
-  
+
     //if no truck then value is -1 by default
     return truckIndex;
 }
@@ -211,36 +235,28 @@ struct DivertedRoute getDivertedRoute(struct Map* map, struct Truck truck,const 
             mindist = dist;
             index = i;
         }
+        if (i == truck.truckRoute.numPoints) {
+            routeComplete = 1;
+        }
     }
     
     r = shortestPath(map, truck.truckRoute.points[index], destination);
     for (int i = 0; i < MAX_ROUTE; i++) {
         divertedRoute.divRoute[i] = r.points[i];
     }
-    divertedRoute.divNumPoints = r.numPoints;
+
 
     return divertedRoute;
-         
-    
-    //// Implementation to get the shortest possible diverted route.
-    //struct DivertedRoute divertedRoute;
+}
 
-    //// Assuming the starting point of the truck is its current location.
-    //struct Point currentLocation = truck.truckRoute.points[0];
+int getArrLength(int arr[]) {
+    int length = sizeof(arr) / sizeof(arr[0]);
+    int count = 0;
 
-    //// Calculate the diverted route from the current location to the shipment destination.
-    //struct Point destination = destination;
-    //divertedRoute.divRoute[0] = currentLocation;
-    //int dx = (destination.col > currentLocation.col) ? 1 : ((destination.col < currentLocation.col) ? -1 : 0);
-    //int dy = (destination.row > currentLocation.row) ? 1 : ((destination.row < currentLocation.row) ? -1 : 0);
-
-    //int i = 1;
-    //while (currentLocation.row != destination.row || currentLocation.col != destination.col) {
-    //    currentLocation.row += dy;
-    //    currentLocation.col += dx;
-    //    divertedRoute.divRoute[i++] = currentLocation;
-    //}
-
-    //divertedRoute.divRoute[i] = map->INVALID; // Mark the end of the route with the invalid point.
-    //return divertedRoute;
+    for (int i = 0; i < length; i++) {
+        if (arr[i] != 0) {
+            count++;
+        }
+    }
+    return count;
 }
