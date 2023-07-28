@@ -25,7 +25,7 @@ struct Map
 */
 struct Point
 {
-	char row;
+	int row;
 	char col;
 };
 

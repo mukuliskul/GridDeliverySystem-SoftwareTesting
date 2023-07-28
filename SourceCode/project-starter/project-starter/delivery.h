@@ -13,13 +13,6 @@ Group 3
 #define MAX_VOLUME 36
 
 /*
-* The Box sizes available for shipping
-*/
-const double boxVolume[3] = {1.0, 0.5, 0.25};
-
-
-
-/*
 * This holds the details that the customer specifies about the shipment
 * and also keep track of the shipment status.(whether it was shipped or not)
 */
@@ -39,7 +32,8 @@ struct Truck {
 	double weightRemaining;
 	double volumeRemaining;
 	int limitingFactor;
-	Route truckRoute;
+	int divertRoute;
+	struct Route truckRoute;
 };
 
 /*
@@ -48,6 +42,7 @@ struct Truck {
 */
 struct DivertedRoute {
 	struct Point divRoute[MAX_ROUTE];
+	int divNumPoints;
 };
 
 
@@ -56,7 +51,7 @@ struct DivertedRoute {
 * recieves no parameters 
 * returns nothing
 */
-void displayHedeer();
+void displayHeader();
 
 /**
 * Displays the complete delivery menu and calls required function to get, validate and implement user input
@@ -82,10 +77,10 @@ int checkBox(double boxSize);
 
 /**
 * Checks if the destination input is valid or not
-* @param recieves a volume value
+* @param recieves the int row and char column for the destination value
 * @returns 1 if the value is valid and 0 if it is not
 */
-int checkDestination();
+int checkDestination(int row, char col);
 
 /**
 * Finds the best truck for shipment after comparing, routes, shortest diverted paths, load already on the trucks 
@@ -108,9 +103,18 @@ struct Shipment getUserInput();
 /**
 * Gets the shortest possible path when a truck's route needs to be diverted for a shipment
 * gets all the points on the map that make up the route and stores them in the divertedRoute structure
-* recieves no parameters
+* @param *map recieves the address of the current map array holding the positions of all the buildings and empty spaces
+* @param truck the truck to be used for shipment
+* @param destination the destination of the diverted path
 * @returns the diverted route structure
 */
-struct DivertedRoute getDivertedRoute();
+struct DivertedRoute getDivertedRoute(struct Map* map, struct Truck truck, const struct Point destination);
+
+/**
+* returns the valid length of an in arrays
+* @param the array to calculate length for
+* @returns length
+*/
+int getArrLength(int arr[]);
 
 #endif // DELIVERY_H

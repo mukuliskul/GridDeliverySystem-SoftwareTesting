@@ -143,6 +143,7 @@
     <ClInclude Include="mapping.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="delivery.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="mapping.c" />
   </ItemGroup>
