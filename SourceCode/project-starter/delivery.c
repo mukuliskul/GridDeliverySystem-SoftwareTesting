@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-#include "Delivery.h"
+#include "delivery.h"
 
 void displayHeader() {
     printf("=================\n");
@@ -46,9 +46,7 @@ void displayDeliveryMenu() {
             else {
                 printf("Ship on %s LINE, ", truckArr[TruckIndex].routeColor);
                 if (truckArr[TruckIndex].divertRoute == 0) {
-                    printf("came inside");
                     struct DivertedRoute divertedRoute = getDivertedRoute(&map, truckArr[TruckIndex], shipment.destination);
-                    printf("came outie");
                     printf("divert: ");
                     int i = 0;
                     int totalDivPoints = sizeof(divertedRoute.divRoute) / sizeof(divertedRoute.divRoute[0]);

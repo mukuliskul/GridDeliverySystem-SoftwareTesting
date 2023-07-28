@@ -32,9 +32,9 @@ struct Truck {
 	double weightRemaining;
 	double volumeRemaining;
 	int limitingFactor;
+	int divertRoute;
 	struct Route truckRoute;
 };
-
 /*
 * A collection of points that constitute the diverted path from the route of the 
 * truck to the destination
