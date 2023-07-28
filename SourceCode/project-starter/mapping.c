@@ -216,7 +216,7 @@ void addPointToRouteIfNot(struct Route* route, const int row, const int col, con
 double distance(const struct Point* p1, const struct Point* p2)
 {
 	int deltaRow = p2->row - p1->row;
-	int deltaCol = (int)(p2->col - 65) - (int)(p1->col - 65);
+	int deltaCol = p2->col - p1->col;
 
 	return sqrt((double)(deltaRow * deltaRow + deltaCol * deltaCol));
 }

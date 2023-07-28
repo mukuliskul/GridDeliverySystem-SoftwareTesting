@@ -32,7 +32,6 @@ struct Truck {
 	double weightRemaining;
 	double volumeRemaining;
 	int limitingFactor;
-	int divertRoute;
 	struct Route truckRoute;
 };
 
@@ -42,7 +41,7 @@ struct Truck {
 */
 struct DivertedRoute {
 	struct Point divRoute[MAX_ROUTE];
-	int divNumPoints;
+  int divNumPoints;
 };
 
 
@@ -109,12 +108,5 @@ struct Shipment getUserInput();
 * @returns the diverted route structure
 */
 struct DivertedRoute getDivertedRoute(struct Map* map, struct Truck truck, const struct Point destination);
-
-/**
-* returns the valid length of an in arrays
-* @param the array to calculate length for
-* @returns length
-*/
-int getArrLength(int arr[]);
 
 #endif // DELIVERY_H
