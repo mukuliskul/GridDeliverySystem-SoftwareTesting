@@ -1,9 +1,9 @@
 #!/bin/sh
 echo "Starting test runner..."
 
-test_runner="C:\Program Files\Microsoft VisualStudio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"
+test_runner="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"
 
-tests_dll="E:\Prabh\Sem 2\Important\SFT221\Project\Repo\Sum23-SFT221-NEE-3\SourceCode\UnitTest1\x64\Debug\UnitTest1.dll"
+tests_dll="E:\Prabh\Sem 2\Important\SFT221\Project\Repo\Sum23-SFT221-NEE-3\SourceCode\UnitTest1\x64\Debug\UnitTest1.dll.recipe"
 failure_string="Failed:"
 
 testout=`"$test_runner" "$tests_dll"`
