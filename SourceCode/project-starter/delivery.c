@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include <string.h>
 #include "delivery.h"
 
 void displayHeader() {
@@ -46,7 +45,9 @@ void displayDeliveryMenu() {
             else {
                 printf("Ship on %s LINE, ", truckArr[TruckIndex].routeColor);
                 if (truckArr[TruckIndex].divertRoute == 0) {
+                    printf("came inside");
                     struct DivertedRoute divertedRoute = getDivertedRoute(&map, truckArr[TruckIndex], shipment.destination);
+                    printf("came outie");
                     printf("divert: ");
                     int i = 0;
                     int totalDivPoints = sizeof(divertedRoute.divRoute) / sizeof(divertedRoute.divRoute[0]);
@@ -105,16 +106,8 @@ int checkDestination(int row, char col) {
 }
 
 int selectTruck(struct Map* map, struct Truck truckArr[], int numOfTrucks, struct Shipment shipment) {
-
     struct DivertedRoute dr;
     int onRouteTrucks[3] = { 0 }, proximityApprovedTrucks[3] = { 0 };
-
-   /* for (int i = 0; i < 3; i++) {
-        printf("%d\n", onRouteTrucks[i]);
-    }*/
-
-    // gets lenth of array : proximityApprovedTrucks
-    int lengthProximityTrucks;
 
     int truckIndex = -1, minDivDist = 100, onRouteCounter = 0, proximityApprovedCounter = 0;
 
@@ -147,7 +140,7 @@ int selectTruck(struct Map* map, struct Truck truckArr[], int numOfTrucks, struc
         }
         //diverted path is needed
         if (!truckArr[i].divertRoute && truckArr[i].limitingFactor) {
-            proximityApprovedTrucks[proximityApprovedCounter] = i + 1;
+            proximityApprovedTrucks[proximityApprovedCounter] = i; // No need to add 1 here
             proximityApprovedCounter++;
         }
     }
@@ -156,31 +149,32 @@ int selectTruck(struct Map* map, struct Truck truckArr[], int numOfTrucks, struc
         truckIndex = onRouteTrucks[0] - 1;
     }
     else if (proximityApprovedTrucks[0] != 0) {
-        lengthProximityTrucks = getArrLength(proximityApprovedTrucks);
+        int lengthProximityTrucks = getArrLength(proximityApprovedTrucks, 3); // Pass the correct length of the array
         for (int i = 0; i < lengthProximityTrucks; i++) {
-            dr = getDivertedRoute(map, truckArr[proximityApprovedTrucks[i] - 1], shipment.destination);
+            dr = getDivertedRoute(map, truckArr[proximityApprovedTrucks[i]], shipment.destination); // No need to subtract 1 here
             if (dr.divNumPoints < minDivDist) {
                 minDivDist = dr.divNumPoints;
-                truckIndex = proximityApprovedTrucks[i] - 1;
-                truckArr[proximityApprovedTrucks[i] - 1].divertRoute = 0;
+                truckIndex = proximityApprovedTrucks[i];
+                truckArr[proximityApprovedTrucks[i]].divertRoute = 0;
             }
         }
     }
 
     if (truckIndex != -1) {
-        truckArr[truckIndex].weightRemaining = truckArr[truckIndex].weightRemaining - shipment.weight;
-        truckArr[truckIndex].volumeRemaining = truckArr[truckIndex].volumeRemaining - shipment.volume;
+        truckArr[truckIndex].weightRemaining -= shipment.weight;
+        truckArr[truckIndex].volumeRemaining -= shipment.volume;
     }
 
     //if no truck then value is -1 by default
     return truckIndex;
 }
 
+
 struct Shipment getUserInput() {
     struct Shipment shipment;
     double weight, boxSize;
     char destinationInput[4];
-    int row; 
+    int row;
     char col;
     int validInput = 0;
 
@@ -220,14 +214,14 @@ struct Shipment getUserInput() {
 }
 
 
-struct DivertedRoute getDivertedRoute(struct Map* map, struct Truck truck,const struct Point destination) {
+struct DivertedRoute getDivertedRoute(struct Map* map, struct Truck truck, const struct Point destination) {
     struct DivertedRoute divertedRoute;
     struct Point diversionPoint;
     double dist, mindist = 100.0;
     int index = -1;
     int i = 0, routeComplete = 0;
     struct Route r;
-    for ( i = 0; i < MAX_ROUTE && !routeComplete; i++) {
+    for (i = 0; i < MAX_ROUTE && !routeComplete; i++) {
         dist = distance(&truck.truckRoute.points[i], &destination);
         if (dist < mindist) {
             mindist = dist;
@@ -237,7 +231,7 @@ struct DivertedRoute getDivertedRoute(struct Map* map, struct Truck truck,const 
             routeComplete = 1;
         }
     }
-    
+
     r = shortestPath(map, truck.truckRoute.points[index], destination);
     for (int i = 0; i < MAX_ROUTE; i++) {
         divertedRoute.divRoute[i] = r.points[i];
@@ -247,14 +241,20 @@ struct DivertedRoute getDivertedRoute(struct Map* map, struct Truck truck,const 
     return divertedRoute;
 }
 
-int getArrLength(int arr[]) {
-    int length = sizeof(arr) / sizeof(arr[0]);
+int getArrLength(int arr[], int length) {
+    // Old code: The following line of code calculates the length of the array using sizeof.
+    // int length = sizeof(arr) / sizeof(arr[0]);
+
     int count = 0;
 
+    // New code: The new implementation receives the length of the array as a parameter 'length'.
+    // We will use this parameter to iterate through the array and count the non-zero elements.
     for (int i = 0; i < length; i++) {
         if (arr[i] != 0) {
             count++;
         }
     }
+
+    // The function now returns the count of non-zero elements instead of the length.
     return count;
 }
