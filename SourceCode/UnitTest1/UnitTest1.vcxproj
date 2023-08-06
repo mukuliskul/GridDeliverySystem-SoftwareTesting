@@ -92,15 +92,15 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>E:\Prabh\Sem 2\Important\SFT221\Project\Repo\Sum23-SFT221-NEE-3\SourceCode\project-starter;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\project-starter;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>E:\Prabh\Sem 2\Important\SFT221\Project\Repo\Sum23-SFT221-NEE-3\SourceCode\UnitTest1\x64\Debug\delivery;E:\Prabh\Sem 2\Important\SFT221\Project\Repo\Sum23-SFT221-NEE-3\SourceCode\UnitTest1\x64\Debug\mapping;$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>E:\Prabh\Sem 2\Important\SFT221\Project\Repo\Sum23-SFT221-NEE-3\SourceCode\project-starter\x64\Debug\mapping;E:\Prabh\Sem 2\Important\SFT221\Project\Repo\Sum23-SFT221-NEE-3\SourceCode\project-starter\x64\Debug\delivery;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)\X64\Debug\delivery;$(ProjectDir)\x64\Debug\mapping;$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(ProjectDir)..\project-starter\x64\Debug\mapping;$(ProjectDir)..\project-starter\x64\Debug\delivery;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
