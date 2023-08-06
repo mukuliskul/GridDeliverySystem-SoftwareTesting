@@ -109,4 +109,10 @@ struct Shipment getUserInput();
 */
 struct DivertedRoute getDivertedRoute(struct Map* map, struct Truck truck, const struct Point destination);
 
+/**
+* returns the valid length of an in arrays
+* @param the array to calculate length for
+* @returns length
+*/
+int getArrLength(int arr[], int length);
 #endif // DELIVERY_H
