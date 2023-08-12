@@ -112,5 +112,42 @@ namespace FunctinsTest
 			bool x = checkDestination(testInt, testChar);
 			Assert::IsFalse(x);
 		}
+
+		// Test4 to check empty corners
+		TEST_METHOD(DestinationTest4)
+		{
+			int testInt = 1;
+			char testChar = 'Y';
+			bool x = checkDestination(testInt, testChar);
+			Assert::IsFalse(x);
+		}
+
+		// Test5 to check edge destination
+		TEST_METHOD(DestinationTest5)
+		{
+			int testInt = 24;
+			char testChar = 'Y';
+			bool x = checkDestination(testInt, testChar);
+			Assert::IsTrue(x);
+		}
+
+		// Test6 to check mid map
+		TEST_METHOD(DestinationTest6)
+		{
+			int testInt = 13;
+			char testChar = 'L';
+			bool x = checkDestination(testInt, testChar);
+			Assert::IsTrue(x);
+		}
+
+		// Test7 to check empty points
+		TEST_METHOD(DestinationTest7)
+		{
+			int testInt = 5;
+			char testChar = 'N';
+			bool x = checkDestination(testInt, testChar);
+			Assert::IsFalse(x);
+		}
+
 	};
 }
