@@ -25,12 +25,12 @@ struct Map
 */
 struct Point
 {
-	int row;
+	char row;
 	char col;
 };
 
 /**
-* A route is a collection of points that are adjacent to one another and constitute a path from the 
+* A route is a collection of points that are adjacent to one another and constitute a path from the
 * first point on the path to the last.
 */
 struct Route
@@ -155,7 +155,7 @@ struct Route shortestPath(const struct Map* map, const struct Point start, const
 struct Route getPossibleMoves(const struct Map* map, const struct Point p1, const struct Point backpath);
 
 /**
-* Calculates the Euclidian distance from every point in a route to a single point and returns the 
+* Calculates the Euclidian distance from every point in a route to a single point and returns the
 * index of the point in the route which is closest to the point.
 * @param route - the route to use to find the closest point
 * @param pt - the point to to find the member of the route which is closest to this point
