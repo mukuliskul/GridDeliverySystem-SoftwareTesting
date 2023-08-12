@@ -140,8 +140,7 @@ int selectTruck(struct Map* map, struct Truck truckArr[], int numOfTrucks, struc
         }
         //diverted path is needed
         if (!truckArr[i].divertRoute && truckArr[i].limitingFactor) {
-            proximityApprovedTrucks[proximityApprovedCounter] = i; // No need to add 1 here
-            proximityApprovedCounter++;
+            proximityApprovedTrucks[proximityApprovedCounter] = i; 
         }
     }
 
