@@ -53,6 +53,15 @@ namespace FunctinsTest
 			bool x = checkWeight(test);
 			Assert::IsFalse(x);
 		}
+
+		// Test 4 to check negative value
+		TEST_METHOD(WeightTest4)
+		{
+			double test = -5;
+			bool x = checkWeight(test);
+			Assert::IsFalse(x);
+		}
+
 	};
 	TEST_CLASS(checkBoxFunc)
 	{
@@ -78,6 +87,14 @@ namespace FunctinsTest
 		TEST_METHOD(VolumeTest3)
 		{
 			double test = 0;
+			bool x = checkBox(test);
+			Assert::IsFalse(x);
+		}
+
+		// Test 4 to check negative values
+		TEST_METHOD(VolumeTest4)
+		{
+			double test = -0.5;
 			bool x = checkBox(test);
 			Assert::IsFalse(x);
 		}
@@ -110,6 +127,143 @@ namespace FunctinsTest
 			int testInt = 0;
 			char testChar = 'Z';
 			bool x = checkDestination(testInt, testChar);
+			Assert::IsFalse(x);
+		}
+
+		// Test4 to check empty corners
+		TEST_METHOD(DestinationTest4)
+		{
+			int testInt = 1;
+			char testChar = 'Y';
+			bool x = checkDestination(testInt, testChar);
+			Assert::IsFalse(x);
+		}
+
+		// Test5 to check edge destination
+		TEST_METHOD(DestinationTest5)
+		{
+			int testInt = 24;
+			char testChar = 'Y';
+			bool x = checkDestination(testInt, testChar);
+			Assert::IsTrue(x);
+		}
+
+		// Test6 to check mid map
+		TEST_METHOD(DestinationTest6)
+		{
+			int testInt = 13;
+			char testChar = 'L';
+			bool x = checkDestination(testInt, testChar);
+			Assert::IsTrue(x);
+		}
+
+		// Test7 to check empty points
+		TEST_METHOD(DestinationTest7)
+		{
+			int testInt = 5;
+			char testChar = 'N';
+			bool x = checkDestination(testInt, testChar);
+			Assert::IsFalse(x);
+		}
+	};
+
+	TEST_CLASS(IntegrationTests)
+	{
+	public:
+
+		// Test 1 for all valid values
+		TEST_METHOD(IntegrationTest1)
+		{
+			double weight = 20, volume = 0.5;
+			int testInt = 12;
+			char testChar = 'L';
+			
+			bool wght = checkWeight(weight);
+			bool vol = checkBox(volume);
+			bool dest = checkDestination(testInt, testChar);
+
+			bool x = false;
+
+			if (wght && vol && dest) { 
+				x = true;
+			}
+			Assert::IsTrue(x);
+		}
+
+		// Test 2 for 1 invalid value
+		TEST_METHOD(IntegrationTest2)
+		{
+			double weight = 20, volume = 3;
+			int testInt = 12;
+			char testChar = 'L';
+
+			bool wght = checkWeight(weight);
+			bool vol = checkBox(volume);
+			bool dest = checkDestination(testInt, testChar);
+
+			bool x = false;
+
+			if (wght && vol && dest) {
+				x = true;
+			}
+			Assert::IsFalse(x);
+		}
+
+		// Test 3 for 2 invalid values
+		TEST_METHOD(IntegrationTest3)
+		{
+			double weight = 10000, volume = 3;
+			int testInt = 12;
+			char testChar = 'L';
+
+			bool wght = checkWeight(weight);
+			bool vol = checkBox(volume);
+			bool dest = checkDestination(testInt, testChar);
+
+			bool x = false;
+
+			if (wght && vol && dest) {
+				x = true;
+			}
+			Assert::IsFalse(x);
+		}
+
+		// Test 4 for all invalid values
+		TEST_METHOD(IntegrationTest4)
+		{
+			double weight = 10000, volume = 3;
+			int testInt = 0;
+			char testChar = 'Z';
+
+			bool wght = checkWeight(weight);
+			bool vol = checkBox(volume);
+			bool dest = checkDestination(testInt, testChar);
+
+			bool x = false;
+
+			if (wght && vol && dest) {
+				x = true;
+			}
+			Assert::IsFalse(x);
+		}
+
+
+		// Test 5 with negative values
+		TEST_METHOD(IntegrationTest5)
+		{
+			double weight = -5, volume = 0.5;
+			int testInt = 6;
+			char testChar = 'G';
+
+			bool wght = checkWeight(weight);
+			bool vol = checkBox(volume);
+			bool dest = checkDestination(testInt, testChar);
+
+			bool x = false;
+
+			if (wght && vol && dest) {
+				x = true;
+			}
 			Assert::IsFalse(x);
 		}
 	};
