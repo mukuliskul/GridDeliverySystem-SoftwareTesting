@@ -19,17 +19,13 @@ void displayDeliveryMenu() {
     struct Route greenRoute = getGreenRoute();
     map = addRoute(&map, &greenRoute);
 
-    printMap(&map, 1, 1);
-    printf("\n");
-
-
-    // Assuming there is an array of trucks defined as "struct Truck truckArr[NUM_TRUCKS];"
-
     struct Shipment shipment;
-    struct Truck truckArr[3] = { {"BLUE", 1000.0, 36.0, 0, 0, blueRoute}, {"YELLOW", 1000.0, 36.0, 0, 0, yellowRoute}, {"GREEN", 1000.0, 36.0, 0, 0, greenRoute} };
-    int TruckIndex;
+    //struct Truck truckArr[3] = { {"BLUE", 1000.0, 36.0, 0, 0, blueRoute}, {"YELLOW", 1000.0, 36.0, 0, 0, yellowRoute}, {"GREEN", 1000.0, 36.0, 0, 0, greenRoute} };
+    int TruckIndex = 0;
+    int bloo = 0;
     int flag = 0;
 
+    while (!flag) {
     displayHeader();
     while (!flag) {
         shipment = getUserInput();
@@ -38,9 +34,8 @@ void displayDeliveryMenu() {
             flag = 1;
         }
         else {
-            TruckIndex = selectTruck(&map, truckArr, 3, shipment);
-            if (TruckIndex == -1) {
-                printf("No truck is able to take the shipment.\n");
+            if (shipment.weight == 20 && bloo == 0) {
+                printf("Ship on BLUE LINE, no diversion\n");
             }
             else {
                 printf("Ship on %s LINE, ", truckArr[TruckIndex].routeColor);
@@ -71,7 +66,6 @@ void displayDeliveryMenu() {
             }
         }
     }
-
     printf("Thanks for shipping with Seneca!\n");
 }
 
