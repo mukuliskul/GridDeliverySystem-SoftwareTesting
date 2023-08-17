@@ -511,5 +511,125 @@ namespace FunctinsTest
 			Assert::IsTrue(x);
 			Assert::AreEqual(0, TruckIndex);
 		}
+
+		// Test 7 to check for a point on the blue route
+		TEST_METHOD(FinalIntegrationTest7)
+		{
+			double weight = 500, volume = 1.0;
+			int testInt = 5;
+			char testChar = 'J';
+
+
+			struct Map map = populateMap();
+			struct Route blueRoute = getBlueRoute();
+			map = addRoute(&map, &blueRoute);
+			struct Route yellowRoute = getYellowRoute();
+			map = addRoute(&map, &yellowRoute);
+			struct Route greenRoute = getGreenRoute();
+			map = addRoute(&map, &greenRoute);
+
+			int TruckIndex = -1;
+
+			struct Truck truckArr[3] = { {"BLUE", 1000.0, 36.0, 0, 0, blueRoute}, {"YELLOW", 1000.0, 36.0, 0, 0, yellowRoute}, {"GREEN", 1000.0, 36.0, 0, 0, greenRoute} };
+
+			struct Shipment testShip = { weight, volume, {testInt, (testChar - 65)} };
+
+			bool wght = checkWeight(weight);
+			bool vol = checkBox(volume);
+			bool dest = checkDestination(testInt, testChar);
+
+			bool x = false;
+
+			if (wght && vol && dest) {
+				x = true;
+			}
+
+			if (x) {
+				TruckIndex = selectTruck(&map, truckArr, 3, testShip);
+			}
+
+			Assert::IsFalse(x);
+			Assert::AreEqual(-1, TruckIndex);
+		}
+
+		// Test 8 to check for another point on green route
+		TEST_METHOD(FinalIntegrationTest8)
+		{
+			double weight = 500, volume = 1.0;
+			int testInt = 1;
+			char testChar = 'S';
+
+
+			struct Map map = populateMap();
+			struct Route blueRoute = getBlueRoute();
+			map = addRoute(&map, &blueRoute);
+			struct Route yellowRoute = getYellowRoute();
+			map = addRoute(&map, &yellowRoute);
+			struct Route greenRoute = getGreenRoute();
+			map = addRoute(&map, &greenRoute);
+
+			int TruckIndex = -1;
+
+			struct Truck truckArr[3] = { {"BLUE", 1000.0, 36.0, 0, 0, blueRoute}, {"YELLOW", 1000.0, 36.0, 0, 0, yellowRoute}, {"GREEN", 1000.0, 36.0, 0, 0, greenRoute} };
+
+			struct Shipment testShip = { weight, volume, {testInt, (testChar - 65)} };
+
+			bool wght = checkWeight(weight);
+			bool vol = checkBox(volume);
+			bool dest = checkDestination(testInt, testChar);
+
+			bool x = false;
+
+			if (wght && vol && dest) {
+				x = true;
+			}
+
+			if (x) {
+				TruckIndex = selectTruck(&map, truckArr, 3, testShip);
+			}
+
+			Assert::IsFalse(x);
+			Assert::AreEqual(-1, TruckIndex);
+		}
+
+		// Test 9 to check for another point on yellow route
+		TEST_METHOD(FinalIntegrationTest9)
+		{
+			double weight = 500, volume = 1.0;
+			int testInt = 20;
+			char testChar = 'W';
+
+
+			struct Map map = populateMap();
+			struct Route blueRoute = getBlueRoute();
+			map = addRoute(&map, &blueRoute);
+			struct Route yellowRoute = getYellowRoute();
+			map = addRoute(&map, &yellowRoute);
+			struct Route greenRoute = getGreenRoute();
+			map = addRoute(&map, &greenRoute);
+
+			int TruckIndex = -1;
+
+			struct Truck truckArr[3] = { {"BLUE", 1000.0, 36.0, 0, 0, blueRoute}, {"YELLOW", 1000.0, 36.0, 0, 0, yellowRoute}, {"GREEN", 1000.0, 36.0, 0, 0, greenRoute} };
+
+			struct Shipment testShip = { weight, volume, {testInt, (testChar - 65)} };
+
+			bool wght = checkWeight(weight);
+			bool vol = checkBox(volume);
+			bool dest = checkDestination(testInt, testChar);
+
+			bool x = false;
+
+			if (wght && vol && dest) {
+				x = true;
+			}
+
+			if (x) {
+				TruckIndex = selectTruck(&map, truckArr, 3, testShip);
+			}
+
+			Assert::IsFalse(x);
+			Assert::AreEqual(-1, TruckIndex);
+		}
 	};
 }
