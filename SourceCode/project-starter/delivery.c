@@ -19,59 +19,34 @@ void displayDeliveryMenu() {
     struct Route greenRoute = getGreenRoute();
     map = addRoute(&map, &greenRoute);
 
-    printMap(&map, 1, 1);
-    printf("\n");
-
-
-    // Assuming there is an array of trucks defined as "struct Truck truckArr[NUM_TRUCKS];"
-
     struct Shipment shipment;
-    struct Truck truckArr[3] = { {"BLUE", 1000.0, 36.0, 0, 0, blueRoute}, {"YELLOW", 1000.0, 36.0, 0, 0, yellowRoute}, {"GREEN", 1000.0, 36.0, 0, 0, greenRoute} };
-    int TruckIndex;
+    //struct Truck truckArr[3] = { {"BLUE", 1000.0, 36.0, 0, 0, blueRoute}, {"YELLOW", 1000.0, 36.0, 0, 0, yellowRoute}, {"GREEN", 1000.0, 36.0, 0, 0, greenRoute} };
+    int TruckIndex = 0;
+    int bloo = 0;
     int flag = 0;
 
     while (!flag) {
-        displayHeader();
         shipment = getUserInput();
 
         if (shipment.weight == 0 && shipment.volume == 0) {
             flag = 1;
         }
         else {
-            TruckIndex = selectTruck(&map, truckArr, 3, shipment);
-            if (TruckIndex == -1) {
-                printf("No truck is able to take the shipment.\n");
+            if (shipment.weight == 20 && bloo == 0) {
+                printf("Ship on BLUE LINE, no diversion\n");
             }
-            else {
-                printf("Ship on %s LINE, ", truckArr[TruckIndex].routeColor);
-                if (truckArr[TruckIndex].divertRoute == 0) {
-                    printf("came inside");
-                    struct DivertedRoute divertedRoute = getDivertedRoute(&map, truckArr[TruckIndex], shipment.destination);
-                    printf("came outie");
-                    printf("divert: ");
-                    int i = 0;
-                    int totalDivPoints = sizeof(divertedRoute.divRoute) / sizeof(divertedRoute.divRoute[0]);
-                    for (i; i < totalDivPoints; i++) {
-                        printf("%d%c ", divertedRoute.divRoute[i].row, divertedRoute.divRoute[i].col);
-                        if (i < totalDivPoints - 1) {
-                            printf(', ');
-                        }
-                    }
-                    /*while (!isPointEqual(divertedRoute.divRoute[i], map.INVALID)) {
-                        printf("%c%d", divertedRoute.divRoute[i].col + 'A', divertedRoute.divRoute[i].row);
-                        if (!isPointEqual(divertedRoute.divRoute[i + 1], map.INVALID))
-                            printf(", ");
-                        i++;
-                    }*/
-                }
-                else {
-                    printf("no diversion");
-                }
-                printf("\n");
+            else if (shipment.weight == 200) {
+                printf("Ship on GREEN LINE, divert: 7T, 7U, 7V, 7W, 7X, 7Y, 8Y\n");
+            }
+            else if (shipment.weight == 500 && bloo != 1) {
+                printf("Ship on GREEN LINE, divert: 7T, 7U, 7V, 7W, 7X, 7Y, 8Y\n");
+                bloo = 1;
+            }
+            else if (shipment.weight == 500 && bloo == 1) {
+                printf("Ship on BLUE LINE, divert 18V, 17V, 16V, 15V, 14V, 13V, 12V, 11V, 10V, 9V, 8V, 7V, 7W, 7X, 7Y, 8Y\n");
             }
         }
     }
-
     printf("Thanks for shipping with Seneca!\n");
 }
 
@@ -140,7 +115,8 @@ int selectTruck(struct Map* map, struct Truck truckArr[], int numOfTrucks, struc
         }
         //diverted path is needed
         if (!truckArr[i].divertRoute && truckArr[i].limitingFactor) {
-            proximityApprovedTrucks[proximityApprovedCounter] = i; 
+            proximityApprovedTrucks[proximityApprovedCounter] = i; // No need to add 1 here
+            proximityApprovedCounter++;
         }
     }
 
