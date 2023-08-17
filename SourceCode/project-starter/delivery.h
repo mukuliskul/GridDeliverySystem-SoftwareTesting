@@ -20,6 +20,7 @@ struct Shipment {
 	double weight;
 	double volume;
 	struct Point destination;
+	int shipStatus;
 };
 
 /*
