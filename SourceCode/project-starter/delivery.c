@@ -20,53 +20,54 @@ void displayDeliveryMenu() {
     map = addRoute(&map, &greenRoute);
 
     struct Shipment shipment;
-    //struct Truck truckArr[3] = { {"BLUE", 1000.0, 36.0, 0, 0, blueRoute}, {"YELLOW", 1000.0, 36.0, 0, 0, yellowRoute}, {"GREEN", 1000.0, 36.0, 0, 0, greenRoute} };
+    struct Truck truckArr[3] = { {"BLUE", 1000.0, 36.0, 0, 0, blueRoute}, {"YELLOW", 1000.0, 36.0, 0, 0, yellowRoute}, {"GREEN", 1000.0, 36.0, 0, 0, greenRoute} };
     int TruckIndex = 0;
     int bloo = 0;
     int flag = 0;
 
     while (!flag) {
-    displayHeader();
-    while (!flag) {
-        shipment = getUserInput();
+        displayHeader();
+        while (!flag) {
+            shipment = getUserInput();
 
-        if (shipment.weight == 0 && shipment.volume == 0) {
-            flag = 1;
-        }
-        else {
-            if (shipment.weight == 20 && bloo == 0) {
-                printf("Ship on BLUE LINE, no diversion\n");
+            if (shipment.weight == 0 && shipment.volume == 0) {
+                flag = 1;
             }
             else {
-                printf("Ship on %s LINE, ", truckArr[TruckIndex].routeColor);
-                /*if (truckArr[TruckIndex].divertRoute == 0) {
-                    printf("came inside");
-                    struct DivertedRoute divertedRoute = getDivertedRoute(&map, truckArr[TruckIndex], shipment.destination);
-                    printf("came outie");
-                    printf("divert: ");
-                    int i = 0;
-                    int totalDivPoints = sizeof(divertedRoute.divRoute) / sizeof(divertedRoute.divRoute[0]);
-                    for (i; i < totalDivPoints; i++) {
-                        printf("%d%c ", divertedRoute.divRoute[i].row, divertedRoute.divRoute[i].col);
-                        if (i < totalDivPoints - 1) {
-                            printf(', ');
-                        }
-                    }*/
-                    /*while (!isPointEqual(divertedRoute.divRoute[i], map.INVALID)) {
-                        printf("%c%d", divertedRoute.divRoute[i].col + 'A', divertedRoute.divRoute[i].row);
-                        if (!isPointEqual(divertedRoute.divRoute[i + 1], map.INVALID))
-                            printf(", ");
-                        i++;
-                    }*/
-                /*}
+                if (shipment.weight == 20 && bloo == 0) {
+                    printf("Ship on BLUE LINE, no diversion\n");
+                }
                 else {
-                    printf("no diversion");
-                }*/
-                printf("\n");
+                    printf("Ship on %s LINE, ", truckArr[TruckIndex].routeColor);
+                    /*if (truckArr[TruckIndex].divertRoute == 0) {
+                        printf("came inside");
+                        struct DivertedRoute divertedRoute = getDivertedRoute(&map, truckArr[TruckIndex], shipment.destination);
+                        printf("came outie");
+                        printf("divert: ");
+                        int i = 0;
+                        int totalDivPoints = sizeof(divertedRoute.divRoute) / sizeof(divertedRoute.divRoute[0]);
+                        for (i; i < totalDivPoints; i++) {
+                            printf("%d%c ", divertedRoute.divRoute[i].row, divertedRoute.divRoute[i].col);
+                            if (i < totalDivPoints - 1) {
+                                printf(', ');
+                            }
+                        }*/
+                        /*while (!isPointEqual(divertedRoute.divRoute[i], map.INVALID)) {
+                            printf("%c%d", divertedRoute.divRoute[i].col + 'A', divertedRoute.divRoute[i].row);
+                            if (!isPointEqual(divertedRoute.divRoute[i + 1], map.INVALID))
+                                printf(", ");
+                            i++;
+                        }*/
+                        /*}
+                        else {
+                            printf("no diversion");
+                        }*/
+                    printf("\n");
+                }
             }
         }
+        printf("Thanks for shipping with Seneca!\n");
     }
-    printf("Thanks for shipping with Seneca!\n");
 }
 
 int checkWeight(double weight) {
