@@ -30,8 +30,8 @@ void displayDeliveryMenu() {
     int TruckIndex;
     int flag = 0;
 
+    displayHeader();
     while (!flag) {
-        displayHeader();
         shipment = getUserInput();
 
         if (shipment.weight == 0 && shipment.volume == 0) {
@@ -44,7 +44,7 @@ void displayDeliveryMenu() {
             }
             else {
                 printf("Ship on %s LINE, ", truckArr[TruckIndex].routeColor);
-                if (truckArr[TruckIndex].divertRoute == 0) {
+                /*if (truckArr[TruckIndex].divertRoute == 0) {
                     printf("came inside");
                     struct DivertedRoute divertedRoute = getDivertedRoute(&map, truckArr[TruckIndex], shipment.destination);
                     printf("came outie");
@@ -56,17 +56,17 @@ void displayDeliveryMenu() {
                         if (i < totalDivPoints - 1) {
                             printf(', ');
                         }
-                    }
+                    }*/
                     /*while (!isPointEqual(divertedRoute.divRoute[i], map.INVALID)) {
                         printf("%c%d", divertedRoute.divRoute[i].col + 'A', divertedRoute.divRoute[i].row);
                         if (!isPointEqual(divertedRoute.divRoute[i + 1], map.INVALID))
                             printf(", ");
                         i++;
                     }*/
-                }
+                /*}
                 else {
                     printf("no diversion");
-                }
+                }*/
                 printf("\n");
             }
         }
@@ -124,8 +124,8 @@ int selectTruck(struct Map* map, struct Truck truckArr[], int numOfTrucks, struc
     }
 
     for (int i = 0; i < numOfTrucks && !truckArr[i].divertRoute; i++) {
-        for (int j = 0; j < MAX_ROUTE; j++) {
-            if (distance(&truckArr[i].truckRoute.points[j], &shipment.destination) == 66) {
+        for (int j = 0; j < truckArr[i].truckRoute.numPoints; j++) {
+            if (distance(&truckArr[i].truckRoute.points[j], &shipment.destination) == 1) {
                 //no diverted path is needed
                 if (truckArr[i].limitingFactor) {
                     onRouteTrucks[onRouteCounter] = i + 1;
@@ -193,7 +193,7 @@ struct Shipment getUserInput() {
                 shipment.weight = weight;
                 shipment.volume = boxSize;
                 shipment.destination.row = row;
-                shipment.destination.col = col;
+                shipment.destination.col = col - 65;
                 validInput = 1;
             }
             else {
