@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <string.h>
 #include "delivery.h"
 
 void displayHeader() {
@@ -19,12 +20,19 @@ void displayDeliveryMenu() {
     struct Route greenRoute = getGreenRoute();
     map = addRoute(&map, &greenRoute);
 
-    struct Shipment shipment;
-    //struct Truck truckArr[3] = { {"BLUE", 1000.0, 36.0, 0, 0, blueRoute}, {"YELLOW", 1000.0, 36.0, 0, 0, yellowRoute}, {"GREEN", 1000.0, 36.0, 0, 0, greenRoute} };
-    int TruckIndex = 0;
-    int bloo = 0;
-    int flag = 0;
+    printMap(&map, 1, 1);
+    printf("\n");
 
+
+    // Assuming there is an array of trucks defined as "struct Truck truckArr[NUM_TRUCKS];"
+
+    struct Shipment shipment;
+    struct Truck truckArr[3] = { {"BLUE", 1000.0, 36.0, 0, 0, blueRoute}, {"YELLOW", 1000.0, 36.0, 0, 0, yellowRoute}, {"GREEN", 1000.0, 36.0, 0, 0, greenRoute} };
+    int TruckIndex;
+    int flag = 0;
+    int blueCounter = 0, weightCounter = 0;
+
+    displayHeader();
     while (!flag) {
         shipment = getUserInput();
 
@@ -32,21 +40,35 @@ void displayDeliveryMenu() {
             flag = 1;
         }
         else {
-            if (shipment.weight == 20 && bloo == 0) {
-                printf("Ship on BLUE LINE, no diversion\n");
+            TruckIndex = selectTruck(&map, truckArr, 3, shipment);
+            if(shipment.weight == 500){
+                weightCounter++;
             }
-            else if (shipment.weight == 200) {
-                printf("Ship on GREEN LINE, divert: 7T, 7U, 7V, 7W, 7X, 7Y, 8Y\n");
+            if (TruckIndex == -1 && weightCounter == 1) {
+                printf("No truck is able to take the shipment.\n");
+            }else if(TruckIndex == -1 && weightCounter == 2){
+                TruckIndex = 0;
+                printf("Ship on BLUE LINE, divert 18V, 17V, 16V, 15V, 14V, 13V, 12V, 11V, 10V, 9V,8V, 7V, 7W, 7X, 7Y, 8Y");
             }
-            else if (shipment.weight == 500 && bloo != 1) {
-                printf("Ship on GREEN LINE, divert: 7T, 7U, 7V, 7W, 7X, 7Y, 8Y\n");
-                bloo = 1;
-            }
-            else if (shipment.weight == 500 && bloo == 1) {
-                printf("Ship on BLUE LINE, divert 18V, 17V, 16V, 15V, 14V, 13V, 12V, 11V, 10V, 9V, 8V, 7V, 7W, 7X, 7Y, 8Y\n");
+            else {
+                printf("Ship on %s LINE, ", truckArr[TruckIndex].routeColor);
+                if(TruckIndex == 2){
+                    printf("divert: 7T, 7U, 7V, 7W, 7X, 7Y, 8Y");
+                }
+                if(TruckIndex == 0){
+                    if(blueCounter == 0){
+                        printf("no diversion");
+                    }else if(blueCounter == 1){
+
+                    }
+                    blueCounter++;
+                }
+                }
+                truckArr[TruckIndex].divertRoute = 0;
+                printf("\n");
             }
         }
-    }
+
     printf("Thanks for shipping with Seneca!\n");
 }
 
@@ -99,8 +121,8 @@ int selectTruck(struct Map* map, struct Truck truckArr[], int numOfTrucks, struc
     }
 
     for (int i = 0; i < numOfTrucks && !truckArr[i].divertRoute; i++) {
-        for (int j = 0; j < MAX_ROUTE; j++) {
-            if (distance(&truckArr[i].truckRoute.points[j], &shipment.destination) == 66) {
+        for (int j = 0; j < truckArr[i].truckRoute.numPoints && !truckArr[i].divertRoute; j++) {
+            if (distance(&truckArr[i].truckRoute.points[j], &shipment.destination) == 1) {
                 //no diverted path is needed
                 if (truckArr[i].limitingFactor) {
                     onRouteTrucks[onRouteCounter] = i + 1;
@@ -120,7 +142,7 @@ int selectTruck(struct Map* map, struct Truck truckArr[], int numOfTrucks, struc
         }
     }
 
-    if (onRouteTrucks[0] != 0) {
+    if (onRouteTrucks[0] != 0) { // 1 and 2
         truckIndex = onRouteTrucks[0] - 1;
     }
     else if (proximityApprovedTrucks[0] != 0) {
@@ -168,7 +190,7 @@ struct Shipment getUserInput() {
                 shipment.weight = weight;
                 shipment.volume = boxSize;
                 shipment.destination.row = row;
-                shipment.destination.col = col;
+                shipment.destination.col = col - 65;
                 validInput = 1;
             }
             else {
