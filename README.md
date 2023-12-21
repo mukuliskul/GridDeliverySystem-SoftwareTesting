@@ -1,59 +1,48 @@
-# GridDeliverySystem Documentation
+# GridDeliverySystem - Testing & Group Collaboration
 
-## Overview
+## Project Overview
 
-This document outlines the framework and objectives of a software project designed to manage package deliveries within a city grid. The project involves the simulation of delivery routes and the optimization of package allocation to various delivery trucks based on specific constraints and requirements.
+This repository showcases our collaborative effort in a software testing project. Our team, consisting of Prabhjot Singh Longia, Harsh Pahurkar, Divya Devendrasinh Rana, and myself, Mukul Sharma, undertook a series of tasks to implement and test software functionalities, demonstrating our collective skills in software development and testing methodologies.
 
-### Project Scope
+## Project Structure
 
-- **City Grid Representation:** A 25x25 square grid modeling the city.
-- **Trucks and Routes:** Three trucks with distinct routes (blue, yellow, green) starting from the office location at grid square 1A.
-- **Truck Specifications:** Each truck has a capacity limit of 1000 kg and 36 cubic meters.
-- **Package Specifications:** Packages vary in size (1/4, 1/2, 1 cubic meter) and weight.
+- **Scrum Reports:** Documentation of our weekly meetings, reflecting on our progress, decisions made, and strategies for upcoming tasks.
+- **Test Plans and Reports:** Detailed test plans and execution reports, emphasizing our systematic approach towards both black-box and white-box testing.
+- **Code:** Implemented functions and test cases, showcasing our practical coding and testing skills.
 
-### Objectives
+## My Contributions
 
-The primary objective is to efficiently assign shipments to the appropriate trucks while minimizing route deviations. This involves calculating the proximity of each truck to the intended delivery destination and considering the truck's remaining capacity.
+As Mukul Sharma, I played a vital role in various aspects of this project:
 
-## Distance Calculation Methodology
+- **Reflections and Problem Solving:** I majorly handled reflections, contributing significantly to the team's understanding of the project requirements and solutions.
+- **Test Case Development:** Focused on generating black-box test cases and crafting comprehensive test documents. I also worked on creating and maintaining white-box test cases, ensuring thorough coverage and quality of the software.
+- **Debugging:** Actively involved in debugging, addressing updates, and resolving any prior unresolved bugs.
+- **Final Testing:** I was responsible for developing and carrying out final testing, ensuring the software met all specifications and requirements.
+- **Test Matrix Updates:** Updated the test-matrix with the inclusion of final tests, providing a clear and organized representation of our testing efforts.
 
-- **Euclidean Geometry:** Employ Euclidean geometry to ascertain the shortest path for potential route diversions, taking into account the city grid and building obstructions.
+### Week-by-Week Contributions:
 
-## Algorithm for Shortest Path
+- **Week 1:** Handled reflections and contributed to discussions on project roles and testing strategies.
+- **Week 2:** Ideated and created reflections, contributing to the team’s understanding of the problem.
+- **Week 3:** Generated black-box test cases and crafted a test document.
+- **Week 4:** Executed both black-box and white-box tests, updating results on Jira.
+- **Week 5:** Focused primarily on debugging and updating any prior unresolved bugs.
+- **Week 6:** Created and executed final tests, ensuring the completion and accuracy of our project deliverables.
 
-- **A\* Algorithm Usage:** Implement the A\* algorithm to navigate the shortest path to the destination, avoiding building structures and not retracing steps.
+## Teamwork and Collaborative Learning
 
-## Comprehensive Algorithm
+Throughout the project, our team demonstrated strong collaboration, effective communication, and a shared commitment to quality. We continuously learned from each milestone, incorporating feedback and improving our strategies. The successful execution of this project is a testament to our collective effort and adaptability.
 
-- **Route and Capacity Tracking:** Continuously monitor each truck's route and available capacity.
-- **Shortest Path Determination:** Identify the truck that offers the shortest diversion from its route to the destination.
-- **Package Allocation:** Allocate shipments based on truck proximity and capacity constraints, marking destinations as unreachable when necessary.
+## Reflections and Learning
 
-## Project Deliverables
-
-- **Code and Documentation Storage:** Utilize Git for storing all code-related work.
-- **Function and Change Documentation:** All data structures, functions, and changes should be thoroughly documented.
-- **Task Management:** Leverage Jira for managing tasks, tracking progress, and conducting scrum meetings.
-- **Directory Structure Maintenance:** Adhere to the predefined repository directory structure for scrum reports and other documents.
-
-## Evaluation Criteria
-
-- **Individual Contribution & Team Collaboration:** Evaluated based on the extent and quality of individual contributions and effective teamwork.
-- **Deadline Adherence & Work Quality:** Focus on meeting project timelines with high-quality outputs.
-- **Testing Rigor & Documentation:** Emphasis on comprehensive testing and meticulous documentation.
-
-## Milestone Descriptions
-
-- **Milestone 2:** Focus on problem analysis, data structure additions, and test plan creation.
-- **Milestone 3:** Develop detailed function specifications.
-- **Milestone 4:** Complete function implementation, execute black-box tests, and develop white-box tests.
-- **Milestone 5:** Develop, implement, and execute integration and acceptance tests.
-- **Milestone 6:** Conduct final acceptance testing, bug resolution, testing report compilation, and test matrix review.
+Reflecting on our journey, we embraced the importance of meticulous planning, comprehensive testing, and transparent documentation. Our approach to problem-solving, along with our ability to adapt and learn from each stage, played a crucial role in the project's success.
 
 ## Additional Resources
 
-### Team Collaboration and Testing Details
+## Project Documentation
 
-For a detailed insight into our team's collaborative efforts, individual contributions, and specific testing methodologies implemented throughout the project, please refer to our **[Testing and Collaboration Documentation](./TestingAndCollaboration.md)**.
+For a comprehensive understanding of the GridDeliverySystem project, including its framework, objectives, and detailed project scope, please refer to **[GridDeliverySystem Documentation](./Documentation.md)**.
 
-This document provides an in-depth view of how our team navigated the challenges of software testing, including black-box and white-box testing strategies, and the collaborative process that guided our progress and decisions from inception to completion. It also includes personal reflections and learning experiences from me, emphasizing my journey towards achieving our project goals.
+## Conclusion
+
+This repository not only highlights our team's technical capabilities but also our ability to work collaboratively, learn from challenges, and deliver quality software solutions. For more details on specific tasks and outcomes, please refer to the individual documents within this repository.
